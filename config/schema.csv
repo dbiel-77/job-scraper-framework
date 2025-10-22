@@ -1,0 +1,6 @@
+field,type,required
+title,string,yes
+company,string,yes
+location,string,no
+posted_date,string,no
+url,string,yes

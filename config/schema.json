@@ -1,0 +1,11 @@
+{
+  "description": "Defines the expected structure for cleaned job data.",
+  "fields": {
+    "title": "string",
+    "company": "string",
+    "location": "string",
+    "posted_date": "string",
+    "url": "string"
+  },
+  "required": ["title", "company", "url"]
+}

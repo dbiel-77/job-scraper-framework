@@ -1,0 +1,16 @@
+
+#config/scrapers.yaml
+#--------------------
+#Central configuration file listing available scrapers and their status.
+#Each scraper module corresponds to a file in /scrapers.
+
+scrapers:
+  - name: "house_of_commons"
+    enabled: true
+    source: "https://www.ourcommons.ca/Members/en/search"
+    schedule: "weekly"
+
+  - name: "your_scraper_here"
+    enabled: false
+    source: "https://example.com/jobs"
+    schedule: "manual"
