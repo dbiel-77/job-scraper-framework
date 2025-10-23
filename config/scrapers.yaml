@@ -3,6 +3,7 @@
 #--------------------
 #Central configuration file listing available scrapers and their status.
 #Each scraper module corresponds to a file in /scrapers.
+#`yaml.safe_load(open('config/settings.yaml'))`
 
 scrapers:
   - name: "sencanada"
@@ -14,3 +15,26 @@ scrapers:
     enabled: false
     source: "https://example.com/jobs"
     schedule: "manual"
+
+framework:
+  log_level: INFO
+  output_format: csv
+  save_path: data/raw/
+  archive_old_data: true
+
+scrapers:
+  concurrency: 2            # number of scrapers to run at once
+  retry_attempts: 3
+  retry_delay_seconds: 5
+  timeout_seconds: 20
+  default_wait_time: 3
+
+selenium:
+  headless: true
+  driver_path: null         # system PATH if null
+  window_size: "1920,1080"
+
+requests:
+  user_agent: "Mozilla/5.0 (compatible; JobScraper/1.0)"
+  max_retries: 3
+  backoff_factor: 0.5

@@ -50,12 +50,66 @@ class BaseScraper(ABC):
     # --- Setup / teardown -----------------------------------------------------
 
     def _init_driver(self):
-        """Initialize a headless Chrome WebDriver."""
-        options = Options()
-        options.add_argument("--headless=new")
-        options.add_argument("--no-sandbox")
-        options.add_argument("--disable-dev-shm-usage")
-        self.driver = webdriver.Chrome(options=options)
+        """
+        Initialize a headless Selenium driver with OS and browser auto-detection.
+
+        Priority:
+            1. Chrome (default)
+            2. Firefox (fallback if Chrome unavailable)
+        """
+
+        import os, sys, shutil
+        from selenium import webdriver
+        from selenium.webdriver.chrome.service import Service as ChromeService
+        from selenium.webdriver.firefox.service import Service as FirefoxService
+        from selenium.webdriver.chrome.options import Options as ChromeOptions
+        from selenium.webdriver.firefox.options import Options as FirefoxOptions
+
+        # --- Detect operating system --------------------------------------------
+        platform = sys.platform
+        if platform.startswith("win"):
+            self.os_name = "Windows"
+        elif platform.startswith("darwin"):
+            self.os_name = "macOS"
+        elif platform.startswith("linux"):
+            self.os_name = "Linux"
+        else:
+            self.os_name = "Unknown"
+
+        # --- Check for available browsers ---------------------------------------
+        has_chrome = shutil.which("chromedriver") or shutil.which("google-chrome") or shutil.which("chrome")
+        has_firefox = shutil.which("geckodriver") or shutil.which("firefox")
+
+        # --- Chrome setup (default) ---------------------------------------------
+        if has_chrome:
+            options = ChromeOptions()
+            options.add_argument("--headless=new")
+            options.add_argument("--no-sandbox")
+            options.add_argument("--disable-dev-shm-usage")
+            options.add_argument("--disable-gpu")
+            options.add_argument("--log-level=3")
+            options.add_experimental_option("excludeSwitches", ["enable-logging"])
+
+            service = ChromeService(log_path=os.devnull)
+            self.driver = webdriver.Chrome(service=service, options=options)
+            self.browser = "Chrome"
+
+        # --- Firefox fallback ---------------------------------------------------
+        elif has_firefox:
+            options = FirefoxOptions()
+            options.add_argument("--headless")
+            service = FirefoxService(log_path=os.devnull)
+            self.driver = webdriver.Firefox(service=service, options=options)
+            self.browser = "Firefox"
+
+        else:
+            raise EnvironmentError(
+                "No supported browser driver found. "
+                "Install ChromeDriver or GeckoDriver (Firefox)."
+            )
+
+        print(f"[Selenium] Using {self.browser} on {self.os_name}")
+
 
     def _quit_driver(self):
         """Shut down the Selenium driver cleanly."""
