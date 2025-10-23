@@ -5,7 +5,7 @@
 #Each scraper module corresponds to a file in /scrapers.
 
 scrapers:
-  - name: "house_of_commons"
+  - name: "sencanada"
     enabled: true
     source: "https://www.ourcommons.ca/Members/en/search"
     schedule: "weekly"

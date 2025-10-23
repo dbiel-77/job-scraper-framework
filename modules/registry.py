@@ -1,8 +1,7 @@
 """
 modules/registry.py
 -------------------
-Dynamically discovers scraper modules in /scrapers and loads them.
-Each scraper module must define a class named `Scraper` that inherits BaseScraper.
+Automatically loads and instantiates all scraper modules.
 """
 
 import importlib
