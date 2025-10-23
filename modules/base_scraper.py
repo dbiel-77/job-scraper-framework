@@ -64,6 +64,9 @@ class BaseScraper(ABC):
         from selenium.webdriver.firefox.service import Service as FirefoxService
         from selenium.webdriver.chrome.options import Options as ChromeOptions
         from selenium.webdriver.firefox.options import Options as FirefoxOptions
+        from webdriver_manager.chrome import ChromeDriverManager
+        from webdriver_manager.firefox import GeckoDriverManager
+        import os, sys, shutil
 
         # --- Detect operating system --------------------------------------------
         platform = sys.platform
